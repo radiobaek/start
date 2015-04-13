@@ -64,43 +64,8 @@ public class ContView extends ViewPart {
 		tblColPhone.setWidth(150);
 		tblColPhone.setText("Phone");
 
-		// *** 중요 : ContentProvider/LabelProvidor 설정은 컬럼설정등이 모두 된 후에 한다
 		tableViewer.setContentProvider(new ContViewContentProvider());
 		tableViewer.setLabelProvider(new ContViewLabelProvider());
-
-		// 초기 바인딩
-		
-		
-//		// 워크벤치 Selection service
-//		getSite().getWorkbenchWindow().getSelectionService().addSelectionListener(new ISelectionListener() {
-//			@Override
-//			public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-//				System.out.println(String.format("**SelectionService"));
-//				// NaviView의 Selection을 받는다  
-//				if (part instanceof NaviView) {
-//					TreeItemInfo selectionInfo = NaviView.SelectedTreeItemInfo(selection);
-//					ContView contView = ContView.GetCurrentContView(ContView.this.getSite().getPage());
-//					if (selectionInfo != null) {
-//						if (selectionInfo.Item != null) {
-//							// ContactGroup 선택한 경우
-//							if ((contView != null) && (selectionInfo.Item instanceof TcsContactGroup)) { 
-//								contView.tableViewer.setInput(((TcsContactGroup)selectionInfo.Item).ContactList);
-//								// StatusBar 출력
-//								ApplicationActionBarAdvisor.CurrentActionConfig.getStatusLineManager().setMessage("ContactGroup selected"); 								
-//							}
-//							// Contact 선택한 경우
-//							else if (selectionInfo.Item instanceof TcsContact) {
-//								contView.tableViewer.setInput(((TcsContactGroup)selectionInfo.Parent).ContactList);
-//								contView.tableViewer.setSelection(new StructuredSelection(selectionInfo.Item));
-//								// StatusBar 출력
-//								ApplicationActionBarAdvisor.CurrentActionConfig.getStatusLineManager().setMessage("Contact selected"); 								
-//							}
-//						}
-//					}
-//				}
-//			}
-//		});
-		
 
 	}
 
@@ -108,7 +73,6 @@ public class ContView extends ViewPart {
 	public void setFocus() {
 	}
 	
-	// TableViewer 바인딩 (외부 이벤트)
 	public void BindData(Object data) {
 		tableViewer.setInput(data);
 	}

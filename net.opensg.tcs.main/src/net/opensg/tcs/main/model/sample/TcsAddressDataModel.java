@@ -15,7 +15,7 @@ public class TcsAddressDataModel {
 		TcsContact contact;
 
 		ArrayList<String> names = new ArrayList<String>(
-			Arrays.asList("OpenSG 전체", "본사", "탕정", "세브란스")
+			Arrays.asList("OpenSG All", "OnYang", "Gihung", "Sebrance")
 		);
 		for (String name : names) {
 			group = new TcsContactGroup();
@@ -29,7 +29,7 @@ public class TcsAddressDataModel {
 				contact.Email = String.format("%05d@opensg.net", i + 1);
 				contact.PhoneOffice = String.format("041-000-%05d", i + 1);
 				contact.PhoneMobile = String.format("010-000-%05d", i + 1);
-				contact.Address = "충청남도 아산시 배방읍 북수로 100";
+				contact.Address = "Buksu-ri 100, BaeBang-eup, Asan-si";
 				group.ContactList.add(contact);
 			}
 			resultList.add(group);

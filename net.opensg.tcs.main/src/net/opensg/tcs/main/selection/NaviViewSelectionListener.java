@@ -13,11 +13,11 @@ public class NaviViewSelectionListener implements ISelectionListener {
 //			ContView contView = ContView.GetCurrentContView(ContView.this.getSite().getPage());
 //			if (selectionInfo != null) {
 //				if (selectionInfo.Item != null) {
-//					// ContactGroup 선택한 경우
+//					// ContactGroup 
 //					if ((contView != null) && (selectionInfo.Item instanceof TcsContactGroup)) { 
 //						contView.tableViewer.setInput(((TcsContactGroup)selectionInfo.Item).ContactList);
 //					}
-//					// Contact 선택한 경우
+//					// Contact 
 //					else if (selectionInfo.Item instanceof TcsContact) {
 //						contView.tableViewer.setInput(((TcsContactGroup)selectionInfo.Parent).ContactList);
 //						contView.tableViewer.setSelection(new StructuredSelection(selectionInfo.Item));

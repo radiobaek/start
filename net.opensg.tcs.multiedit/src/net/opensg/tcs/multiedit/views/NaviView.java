@@ -39,7 +39,7 @@ public class NaviView extends ViewPart {
 		Object[] SampleData = TreeViewerBindingData();
 		treeViewer.setInput(SampleData);
 
-		// 워크벤치 Selection service
+		// Selection service
 		getSite().setSelectionProvider(treeViewer);
 		
 		treeViewer.addSelectionChangedListener(new ISelectionChangedListener() {

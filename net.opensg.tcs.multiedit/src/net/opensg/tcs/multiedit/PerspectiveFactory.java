@@ -33,17 +33,17 @@ public class PerspectiveFactory implements IPerspectiveFactory {
 		layout.setFixed(true);
 		
 		
-		// 워크벤치 Selection service -> ContView stack 추가하기
+		// Selection service -> ContView stack
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService().addSelectionListener(new ISelectionListener() {
 			@Override
 			public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 				TcsCommon.ConsoleOut(String.format("**SelectionService"));
-				// NaviView의 Selection을 받는다  
+				// NaviView Selection  
 				if (part instanceof NaviView) {
 					TreeItemInfo selectionInfo = NaviView.SelectedTreeItemInfo(selection);
 					if (selectionInfo != null) {
 						if (selectionInfo.Item != null) {
-							// ContactGroup 선택한 경우
+							// ContactGroup
 							if (selectionInfo.Item instanceof TcsContactGroup) {
 								IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 								try {

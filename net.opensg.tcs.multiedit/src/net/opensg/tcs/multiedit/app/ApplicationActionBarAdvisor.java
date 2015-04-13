@@ -46,16 +46,11 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	protected void fillStatusLine(IStatusLineManager statusLine) {
 		super.fillStatusLine(statusLine);
 
-		// TODO 여기가 맞는가?? - Preference Changed 알림을 StatusBar에 출력
+		// TODO - Preference Changed StatusBar
 		Activator.getDefault().getPreferenceStore()
 				.addPropertyChangeListener(new IPropertyChangeListener() {
 					@Override
 					public void propertyChange(PropertyChangeEvent event) {
-						// (1) 바뀐 Property만 처리하는 경우
-//						if (event.getProperty() == PreferenceConstants.PREF_AddToNewTab) {
-//						}
-
-						// (2) 모든 Property들을 처리하는 경우
 						IPreferenceStore pref = Activator.getDefault().getPreferenceStore();
 						boolean vAddToNewTab = pref.getBoolean(PreferenceConstants.PREF_AddToNewTab);
 						String v1 = (vAddToNewTab) ? "True" : "False";
