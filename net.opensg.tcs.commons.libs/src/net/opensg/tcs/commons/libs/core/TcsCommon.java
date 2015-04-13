@@ -18,9 +18,9 @@ public class TcsCommon {
 	public static String DateDisplay() {
 		return DateDisplay(new Date());
 	}
-	public static void ConsoleOut(String ... strings) {
+	public static void ConsoleOut(String x) {
 		System.out.print("[" + TcsCommon.DateDisplay() + "] ");
-		System.out.println(strings);
+		System.out.println(x);
 	}
 	
 }

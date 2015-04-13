@@ -8,7 +8,7 @@ import net.opensg.tcs.main.model.TcsContactGroup;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
-public class ContViewContentProvider implements IStructuredContentProvider {
+public class ContEditorContentProvider implements IStructuredContentProvider {
 	public void inputChanged(Viewer v, Object oldInput, Object newInput) {
 	}
 
@@ -18,7 +18,7 @@ public class ContViewContentProvider implements IStructuredContentProvider {
 	public Object[] getElements(Object parent) {
 		if (parent == null) return null;
 
-		// TODO Type Conversion ÁÁÀº ¹æ¹ý Ã£±â
+		// TODO Type Conversion ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ Ã£ï¿½ï¿½
 		List<TcsContactGroup> group = null;
 		try {
 			group = (List<TcsContactGroup>)parent;

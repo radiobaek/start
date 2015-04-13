@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.plaf.basic.BasicTreeUI.TreeIncrementAction;
+
 import net.opensg.tcs.commons.libs.core.TcsCommon;
 import net.opensg.tcs.commons.libs.core.TreeItemInfo;
 import net.opensg.tcs.main.model.TcsContactGroup;
@@ -45,13 +47,15 @@ public class NaviView extends ViewPart {
 		treeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
-				// TcsCommon.ConsoleOut(String.format("SelectionChanged - %s", event.toString()));
 				if (event.getSelection().isEmpty()) {
 					return;
 				}
-				TreeItemInfo domainInfo = SelectedTreeItemInfo(event.getSelection());
-				if (domainInfo != null) {
-					TcsCommon.ConsoleOut(String.format("SelectionChanged - %s", domainInfo.ItemName));
+				if (event.getSelection() instanceof IStructuredSelection) {
+					Object domain = ((IStructuredSelection)event.getSelection()).getFirstElement();
+					if (domain instanceof TreeItemInfo) {
+						TreeItemInfo domainInfo = (TreeItemInfo)domain;
+						TcsCommon.ConsoleOut(String.format("SelectionChanged - %s", domainInfo.ItemName));
+					}
 				}
 			}
 		});
@@ -79,23 +83,5 @@ public class NaviView extends ViewPart {
 			resultList.add(itemInfo);
 		}
 		return resultList.toArray();
-	}
-
-	public static TreeItemInfo SelectedTreeItemInfo(ISelection selectionList) {
-		TreeItemInfo domainInfo = null;
-		if (selectionList instanceof IStructuredSelection) {
-			IStructuredSelection selection = (IStructuredSelection)selectionList;
-			for (Iterator iterator = selection.iterator(); iterator.hasNext();) {
-				Object domain = iterator.next();
-				if (domain instanceof TreeItemInfo) {
-					domainInfo = (TreeItemInfo)domain;
-				}
-			}
-			if (domainInfo != null) {
-				TcsCommon.ConsoleOut(String.format("SelectionChanged - %s", domainInfo.ItemName));
-				return domainInfo;
-			}
-		}
-		return null;
 	}
 }
