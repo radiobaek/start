@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="net.opensg.tcs.main.preference.GeneralPage"
+            id="net.opensg.tcs.main.preference.GeneralPage"
+            name="GeneralPage">
+      </page>
+   </extension>
+   <extension
+         id="net.opensg.tcs.main.preference.GeneralPage"
+         point="org.eclipse.equinox.preferences.preferences">
+      <initializer
+            class="net.opensg.tcs.main.preference.PreferenceInitializer">
+      </initializer>
+   </extension>
+
+</plugin>

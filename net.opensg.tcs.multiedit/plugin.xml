@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         id="application"
+         point="org.eclipse.core.runtime.applications">
+      <application>
+         <run
+               class="net.opensg.tcs.multiedit.app.Application">
+         </run>
+      </application>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            name="multiedit Perspective"
+            class="net.opensg.tcs.multiedit.PerspectiveFactory"
+            id="net.opensg.tcs.multiedit.PerspectiveFactory">
+      </perspective>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            id="net.opensg.tcs.multiedit.MultiEditCategory"
+            name="MultiEdit">
+      </category>
+      <view
+            category="net.opensg.tcs.multiedit.multieditCategory"
+            class="net.opensg.tcs.multiedit.views.NaviView"
+            id="net.opensg.tcs.multiedit.views.NaviView"
+            name="Navi View"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="true"
+            category="net.opensg.tcs.multiedit.multieditCategory"
+            class="net.opensg.tcs.multiedit.views.ContView"
+            id="net.opensg.tcs.multiedit.views.ContView"
+            name="ContView"
+            restorable="true">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="net.opensg.tcs.multiedit.views.ContEditor"
+            default="false"
+            id="net.opensg.tcs.multiedit.views.ContEditor"
+            name="ContEditor">
+      </editor>
+   </extension>
+
+</plugin>

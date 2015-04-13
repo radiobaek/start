@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: TCS Common Lib
+Bundle-SymbolicName: net.opensg.tcs.commons.libs
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: net.opensg.tcs.commons.libs.core.Activator
+Bundle-Vendor: opensg.net
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime
+Bundle-ActivationPolicy: lazy
+Export-Package: net.opensg.tcs.commons.libs.core,
+ net.opensg.tcs.commons.libs.ui
