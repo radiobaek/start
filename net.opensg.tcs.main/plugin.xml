@@ -11,8 +11,7 @@
       </page>
    </extension>
    <extension
-         id="net.opensg.tcs.main.preference.GeneralPage"
-         point="org.eclipse.equinox.preferences.preferences">
+         point="org.eclipse.core.runtime.preferences">
       <initializer
             class="net.opensg.tcs.main.preference.PreferenceInitializer">
       </initializer>

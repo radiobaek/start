@@ -1,5 +1,7 @@
 package net.opensg.tcs.main.preference;
 
+import net.opensg.tcs.main.application.Activator;
+
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.PlatformUI;
@@ -10,7 +12,8 @@ import org.eclipse.ui.PlatformUI;
 public class PreferenceInitializer extends AbstractPreferenceInitializer {
 
 	public void initializeDefaultPreferences() {
-		IPreferenceStore store = PlatformUI.getPreferenceStore();
+		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+		//IPreferenceStore store = PlatformUI.getPreferenceStore();
 		store.setDefault(PreferenceConstants.PREF_AddToNewTab, true);
 		store.setDefault(PreferenceConstants.PREF_SamplePopupField1Name, "Field1:");
 		store.setDefault(PreferenceConstants.PREF_SamplePopupField2Name, "Field2:");
