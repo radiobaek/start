@@ -1,17 +1,15 @@
 package net.opensg.tcs.multiedit.views;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-
-import javax.swing.plaf.basic.BasicTreeUI.TreeIncrementAction;
 
 import net.opensg.tcs.commons.libs.core.TcsCommon;
 import net.opensg.tcs.commons.libs.core.TreeItemInfo;
+import net.opensg.tcs.main.application.Activator;
+import net.opensg.tcs.main.model.TcsContact;
 import net.opensg.tcs.main.model.TcsContactGroup;
 import net.opensg.tcs.main.model.sample.TcsAddressDataModel;
 
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeViewerListener;
@@ -21,6 +19,10 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Tree;
+import org.eclipse.ui.IEditorReference;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 public class NaviView extends ViewPart {
@@ -55,6 +57,47 @@ public class NaviView extends ViewPart {
 					if (domain instanceof TreeItemInfo) {
 						TreeItemInfo domainInfo = (TreeItemInfo)domain;
 						TcsCommon.ConsoleOut(String.format("SelectionChanged - %s", domainInfo.ItemName));
+						
+						Object domainItem = domainInfo.Item;
+						TcsContactGroup parentGroup = null;
+						TcsContact currentContact = null;
+						if (domainItem instanceof TcsContactGroup) {
+							parentGroup = (TcsContactGroup)domainItem;
+							IEditorReference existingEditorRef = null;
+							IEditorReference[] editorRefList = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage().getEditorReferences();
+							for (IEditorReference ref : editorRefList) {
+								try {
+									if (((ContEditorInput)ref.getEditorInput()).getContactGroup().Name == parentGroup.Name) {
+										existingEditorRef = ref;
+									}
+								} catch (PartInitException e) {
+									e.printStackTrace();
+								}
+							}
+							if (existingEditorRef == null) {
+								// 신규 Editor 생성
+								IWorkbenchPage page = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage();
+								try {
+									ContEditorInput input = new ContEditorInput();
+									input.setContactGroup(parentGroup);
+									ContEditor contEditor = (ContEditor)page.openEditor(input, ContEditor.ID);
+									contEditor.BindData(input.getContactGroup());
+
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
+							} else {
+								// 기존 Editor 변경
+								//existingEditorRef.getEditor(true).setFocus();
+								IWorkbenchPage page = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage();
+								page.bringToTop(existingEditorRef.getPart(true));
+							}
+						} 
+						else if (domainItem instanceof TcsContact) {
+							currentContact = (TcsContact)domainItem;
+							parentGroup = (TcsContactGroup)domainInfo.Parent;
+							// 기존 Editor에서 Focus 변경
+						}
 					}
 				}
 			}

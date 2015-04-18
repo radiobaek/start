@@ -2,6 +2,7 @@ package net.opensg.tcs.multiedit.views;
 
 import java.util.List;
 
+import net.opensg.tcs.commons.libs.core.TreeItemInfo;
 import net.opensg.tcs.main.model.TcsContact;
 import net.opensg.tcs.main.model.TcsContactGroup;
 
@@ -18,14 +19,22 @@ public class ContEditorContentProvider implements IStructuredContentProvider {
 	public Object[] getElements(Object parent) {
 		if (parent == null) return null;
 
-		// TODO Type Conversion ���� ��� ã��
-		List<TcsContactGroup> group = null;
+		List<TcsContactGroup> groupList = null;
 		try {
-			group = (List<TcsContactGroup>)parent;
+			groupList = (List<TcsContactGroup>)parent;
+		} catch (Exception ex) {
+		}
+		if (groupList != null) {
+			return groupList.toArray();
+		}
+
+		TcsContactGroup group = null;
+		try {
+			group = (TcsContactGroup)parent;
 		} catch (Exception ex) {
 		}
 		if (group != null) {
-			return group.toArray();
+			return group.ContactList.toArray();
 		}
 
 		List<TcsContact> contact = null;
@@ -39,4 +48,5 @@ public class ContEditorContentProvider implements IStructuredContentProvider {
 		
 		return new Object[0];
 	}
+	
 }

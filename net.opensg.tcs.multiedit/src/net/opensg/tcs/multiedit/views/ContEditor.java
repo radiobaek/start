@@ -1,5 +1,7 @@
 package net.opensg.tcs.multiedit.views;
 
+import net.opensg.tcs.main.model.TcsContactGroup;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -23,16 +25,19 @@ public class ContEditor extends EditorPart {
 	private TableViewer tableViewer = null;
 	private Table table;
 
+
 	public ContEditor() {
+		super();
 	}
 
 	/**
 	 * Create contents of the editor part.
+	 * 
 	 * @param parent
 	 */
 	@Override
 	public void createPartControl(Composite parent) {
-		
+
 		this.display = parent.getDisplay();
 		parent.setLayout(new GridLayout(1, false));
 
@@ -42,19 +47,22 @@ public class ContEditor extends EditorPart {
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
-		
+
 		// (2) Create Columns
-		TableViewerColumn viewerColName = new TableViewerColumn(tableViewer, SWT.NONE);
+		TableViewerColumn viewerColName = new TableViewerColumn(tableViewer,
+				SWT.NONE);
 		TableColumn tblColName = viewerColName.getColumn();
 		tblColName.setWidth(150);
 		tblColName.setText("Name");
-		
-		TableViewerColumn viewerColEmail = new TableViewerColumn(tableViewer, SWT.NONE);
+
+		TableViewerColumn viewerColEmail = new TableViewerColumn(tableViewer,
+				SWT.NONE);
 		TableColumn tblColEmail = viewerColEmail.getColumn();
 		tblColEmail.setWidth(150);
 		tblColEmail.setText("E-Mail");
 
-		TableViewerColumn viewerColPhone = new TableViewerColumn(tableViewer, SWT.NONE);
+		TableViewerColumn viewerColPhone = new TableViewerColumn(tableViewer,
+				SWT.NONE);
 		TableColumn tblColPhone = viewerColPhone.getColumn();
 		tblColPhone.setWidth(150);
 		tblColPhone.setText("Phone");
@@ -67,7 +75,6 @@ public class ContEditor extends EditorPart {
 		tableViewer.setInput(data);
 	}
 
-	
 	@Override
 	public void setFocus() {
 		// Set the focus
@@ -86,9 +93,19 @@ public class ContEditor extends EditorPart {
 	@Override
 	public void init(IEditorSite site, IEditorInput input)
 			throws PartInitException {
-		// Initialize the editor part
+		if (!(input instanceof ContEditorInput))
+			throw new PartInitException(
+					"ContEditor.init expects a ContEditorInput.  Actual input: "
+							+ input);
+		setSite(site);
+		setInput(input);
+		setPartName(this.getEditorPartName());
 	}
 
+	private String getEditorPartName() {
+		return ((ContEditorInput)this.getEditorInput()).getContactGroup().Name;
+	}
+	
 	@Override
 	public boolean isDirty() {
 		return false;

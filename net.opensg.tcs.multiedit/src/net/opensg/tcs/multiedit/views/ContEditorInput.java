@@ -8,8 +8,14 @@ import org.eclipse.ui.IPersistableElement;
 
 public class ContEditorInput implements IEditorInput {
 
-	public TcsContactGroup ContactGroup;
-	
+	private TcsContactGroup contactGroup;
+	public TcsContactGroup getContactGroup() {
+		return this.contactGroup;
+	}
+	public void setContactGroup(TcsContactGroup contactGroup) {
+		this.contactGroup = contactGroup;
+	}
+
 	@Override
 	public Object getAdapter(Class adapter) {
 		// TODO Auto-generated method stub
