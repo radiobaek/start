@@ -1,15 +1,14 @@
 package net.opensg.tcs.multiedit.views;
 
 import net.opensg.tcs.main.model.TcsContact;
+import net.opensg.tcs.multiedit.Activator;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.jface.viewers.ColumnViewer;
-import org.eclipse.jface.viewers.EditingSupport;
+import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
-import org.eclipse.jface.viewers.TextCellEditor;
+import org.eclipse.jface.window.ToolTip;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -19,6 +18,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
@@ -29,9 +29,16 @@ public class ContEditor extends EditorPart {
 
 	private Display display = null;
 	private TableViewer tableViewer = null;
-	private Table table;
+	private Table table = null;
 
-
+	public static ContEditor getCurrentEditor() {
+		IEditorPart editor = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+		if (editor instanceof ContEditor) {
+			return (ContEditor)editor;
+		}
+		return null;
+	}
+	
 	public ContEditor() {
 		super();
 	}
@@ -77,7 +84,18 @@ public class ContEditor extends EditorPart {
 		viewerColPhone.setEditingSupport(new ContEditorCellEditing(this.tableViewer, viewerColPhone));
 		
 		tableViewer.setContentProvider(new ContEditorContentProvider());
-		tableViewer.setLabelProvider(new ContEditorLabelProvider());
+
+		// Normal LabelProvider
+		//tableViewer.setLabelProvider(new ContEditorLabelProvider());
+		
+		// OwnerDraw LabelProvider
+		//tableViewer.setLabelProvider(new ContEditorLabelProviderDrawing());
+		
+		// Tooltip LabelProvider
+		ColumnViewerToolTipSupport.enableFor(tableViewer, ToolTip.NO_RECREATE);
+		viewerColName.setLabelProvider(new ContEditorLabelProviderTooltip());
+		viewerColEmail.setLabelProvider(new ContEditorLabelProviderTooltip());
+		viewerColPhone.setLabelProvider(new ContEditorLabelProviderTooltip());
 	}
 
 	public void BindData(Object data) {
@@ -148,5 +166,6 @@ public class ContEditor extends EditorPart {
 		}
 		return null;
 	}
+	
 	
 }

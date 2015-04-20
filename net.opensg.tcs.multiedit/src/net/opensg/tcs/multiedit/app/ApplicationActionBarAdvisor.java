@@ -1,5 +1,6 @@
 package net.opensg.tcs.multiedit.app;
 
+import net.opensg.tcs.main.action.ClearTableViewerAction;
 import net.opensg.tcs.main.action.PreferenceDialogAction;
 import net.opensg.tcs.main.action.SamplePopupAction;
 import net.opensg.tcs.main.application.Activator;
@@ -19,10 +20,15 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
 	public static IActionBarConfigurer CurrentActionConfig;
 
-	public MenuManager fileMenu;
 	public SamplePopupAction samplePopupAction;
 	public PreferenceDialogAction prefDialogAction;
 
+	public MenuManager mainMenu_File;
+
+	public MenuManager mainMenu_TableViewer;
+	public ClearTableViewerAction mainMenuAction_ClearTableViewer;
+	
+	
     public ApplicationActionBarAdvisor(IActionBarConfigurer configurer) {
         super(configurer);
 		CurrentActionConfig = configurer;
@@ -33,15 +39,25 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		register(samplePopupAction);
 		prefDialogAction = new PreferenceDialogAction();
 		register(prefDialogAction);
+		
+		mainMenuAction_ClearTableViewer = new ClearTableViewerAction();
+		register(mainMenuAction_ClearTableViewer);
 	}
 
 	protected void fillMenuBar(IMenuManager menuBar) {
-		fileMenu = new MenuManager("File", "File");
-		fileMenu.add(samplePopupAction);
-		fileMenu.add(prefDialogAction);
-		menuBar.add(fileMenu);
+		mainMenu_File = new MenuManager("File", "File");
+		mainMenu_File.add(samplePopupAction);
+		mainMenu_File.add(prefDialogAction);
+		menuBar.add(mainMenu_File);
+		
+		mainMenu_TableViewer = new MenuManager("TableViewer", "TableViewer");
+		mainMenu_TableViewer.add(mainMenuAction_ClearTableViewer);
+		menuBar.add(mainMenu_TableViewer);
+		
 	}
 
+	
+	
 	@Override
 	protected void fillStatusLine(IStatusLineManager statusLine) {
 		super.fillStatusLine(statusLine);

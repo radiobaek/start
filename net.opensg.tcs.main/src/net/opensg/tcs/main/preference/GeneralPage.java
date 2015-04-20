@@ -12,6 +12,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.ColorFieldEditor;
+import org.eclipse.jface.preference.RadioGroupFieldEditor;
 
 public class GeneralPage extends FieldEditorPreferencePage implements
 		IWorkbenchPreferencePage {
@@ -23,7 +24,12 @@ public class GeneralPage extends FieldEditorPreferencePage implements
 	private StringFieldEditor editorSamplePopupField2Name;
 	private ComboFieldEditor editorSamplePopupType;
 	private ColorFieldEditor editorSamplePopupBackColor;
+	
+	private RadioGroupFieldEditor tableViewerBindingType;
 
+	/**
+	 * @wbp.parser.constructor
+	 */
 	public GeneralPage() {
 		super(GRID);
 		setTitle("TCS General");
@@ -81,6 +87,31 @@ public class GeneralPage extends FieldEditorPreferencePage implements
 				PreferenceConstants.PREF_SamplePopupBackColor,
 				"SamplePopup Background Color", getFieldEditorParent());
 		addField(editorSamplePopupBackColor);
+
+		// TableViewer Binding Options
+//		tableViewerBindingType = new RadioGroupFieldEditor(
+//				PreferenceConstants.PREF_TableViewerBindingType, "TableViewer Binding Type", 1,
+//				new String[][] { 
+//						{ "Normal LabelProvider", "OwnerDraw LabelProvider", "ShowHide Column" },
+//						{ "1", "2", "3" } 
+//				}, 
+//				getFieldEditorParent(),
+//				false);
+//		addField(tableViewerBindingType);
+		
+		
+		tableViewerBindingType = new RadioGroupFieldEditor(
+			PreferenceConstants.PREF_TableViewerBindingType, 
+			"TableViewer Binding Type", 
+			1, 
+			new String[][] {
+					{"Normal LabelProvider", "1"}, 
+					{"OwnerDraw LabelProvider", "2"}, 
+					{"ShowHide Column", "3"}, 
+			}, 
+			getFieldEditorParent(), 
+			false);
+		addField(tableViewerBindingType);
 	}
 
 	@Override
