@@ -9,6 +9,7 @@ import net.opensg.tcs.main.application.Activator;
 import net.opensg.tcs.main.model.TcsContact;
 import net.opensg.tcs.main.model.TcsContactGroup;
 import net.opensg.tcs.main.model.sample.TcsAddressDataModel;
+import net.opensg.tcs.multiedit.command.GlobalCommand;
 
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -57,46 +58,20 @@ public class NaviView extends ViewPart {
 					if (domain instanceof TreeItemInfo) {
 						TreeItemInfo domainInfo = (TreeItemInfo)domain;
 						TcsCommon.ConsoleOut(String.format("SelectionChanged - %s", domainInfo.ItemName));
-						
+						// 현재 선택된 Item 타입에 따른 처리
 						Object domainItem = domainInfo.Item;
-						TcsContactGroup parentGroup = null;
+						TcsContactGroup currentGroup = null;
 						TcsContact currentContact = null;
 						if (domainItem instanceof TcsContactGroup) {
-							parentGroup = (TcsContactGroup)domainItem;
-							IEditorReference existingEditorRef = null;
-							IEditorReference[] editorRefList = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage().getEditorReferences();
-							for (IEditorReference ref : editorRefList) {
-								try {
-									if (((ContEditorInput)ref.getEditorInput()).getContactGroup().Name == parentGroup.Name) {
-										existingEditorRef = ref;
-									}
-								} catch (PartInitException e) {
-									e.printStackTrace();
-								}
-							}
-							if (existingEditorRef == null) {
-								// 신규 Editor 생성
-								IWorkbenchPage page = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage();
-								try {
-									ContEditorInput input = new ContEditorInput();
-									input.setContactGroup(parentGroup);
-									ContEditor contEditor = (ContEditor)page.openEditor(input, ContEditor.ID);
-									contEditor.BindData(input.getContactGroup());
-
-								} catch (Exception e) {
-									e.printStackTrace();
-								}
-							} else {
-								// 기존 Editor 변경
-								//existingEditorRef.getEditor(true).setFocus();
-								IWorkbenchPage page = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage();
-								page.bringToTop(existingEditorRef.getPart(true));
-							}
+							// 선택된 Item이 Group인 경우
+							currentGroup = (TcsContactGroup)domainItem;
+							GlobalCommand.RunActivateContEditor(currentGroup);
 						} 
 						else if (domainItem instanceof TcsContact) {
+							// 선택된 Item이 Contact인 경우
 							currentContact = (TcsContact)domainItem;
-							parentGroup = (TcsContactGroup)domainInfo.Parent;
-							// 기존 Editor에서 Focus 변경
+							currentGroup = (TcsContactGroup)domainInfo.Parent;
+							GlobalCommand.RunActivateContEditor(currentGroup, currentContact);
 						}
 					}
 				}

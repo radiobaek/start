@@ -1,10 +1,15 @@
 package net.opensg.tcs.multiedit.views;
 
-import net.opensg.tcs.main.model.TcsContactGroup;
+import net.opensg.tcs.main.model.TcsContact;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.jface.viewers.ColumnViewer;
+import org.eclipse.jface.viewers.EditingSupport;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -12,6 +17,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
@@ -54,19 +60,22 @@ public class ContEditor extends EditorPart {
 		TableColumn tblColName = viewerColName.getColumn();
 		tblColName.setWidth(150);
 		tblColName.setText("Name");
+		//viewerColName.setEditingSupport(new ContEditorCellEditing(this.tableViewer, viewerColName));
 
 		TableViewerColumn viewerColEmail = new TableViewerColumn(tableViewer,
 				SWT.NONE);
 		TableColumn tblColEmail = viewerColEmail.getColumn();
 		tblColEmail.setWidth(150);
 		tblColEmail.setText("E-Mail");
+		viewerColEmail.setEditingSupport(new ContEditorCellEditing(this.tableViewer, viewerColEmail));
 
 		TableViewerColumn viewerColPhone = new TableViewerColumn(tableViewer,
 				SWT.NONE);
 		TableColumn tblColPhone = viewerColPhone.getColumn();
 		tblColPhone.setWidth(150);
 		tblColPhone.setText("Phone");
-
+		viewerColPhone.setEditingSupport(new ContEditorCellEditing(this.tableViewer, viewerColPhone));
+		
 		tableViewer.setContentProvider(new ContEditorContentProvider());
 		tableViewer.setLabelProvider(new ContEditorLabelProvider());
 	}
@@ -103,7 +112,7 @@ public class ContEditor extends EditorPart {
 	}
 
 	private String getEditorPartName() {
-		return ((ContEditorInput)this.getEditorInput()).getContactGroup().Name;
+		return ((ContEditorInput)this.getEditorInput()).getCurrentGroup().Name;
 	}
 	
 	@Override
@@ -116,4 +125,28 @@ public class ContEditor extends EditorPart {
 		return false;
 	}
 
+
+	/**
+	 * Editor의 해당 Contact에 포커스 이동
+	 * @param contact
+	 */
+	public void setFocusToContact(TcsContact contact) {
+		System.out.println("setFocusToContact " + contact.Name);
+		TableItem item = this.getContactItem(contact.Name);
+		if (item != null) {
+			StructuredSelection selection = new StructuredSelection(item.getData());
+			this.tableViewer.setSelection(selection);
+		}
+	}
+
+	public TableItem getContactItem(String contactName) {
+		for (TableItem item : this.table.getItems()) {
+			if (item.getData() instanceof TcsContact) {
+				TcsContact con = (TcsContact)item.getData();
+				if (con.Name == contactName) return item;
+			}
+		}
+		return null;
+	}
+	
 }

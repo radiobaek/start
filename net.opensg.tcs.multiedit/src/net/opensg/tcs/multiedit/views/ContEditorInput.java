@@ -1,5 +1,6 @@
 package net.opensg.tcs.multiedit.views;
 
+import net.opensg.tcs.main.model.TcsContact;
 import net.opensg.tcs.main.model.TcsContactGroup;
 
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -8,12 +9,20 @@ import org.eclipse.ui.IPersistableElement;
 
 public class ContEditorInput implements IEditorInput {
 
-	private TcsContactGroup contactGroup;
-	public TcsContactGroup getContactGroup() {
-		return this.contactGroup;
+	private TcsContactGroup currentGroup = null;
+	public TcsContactGroup getCurrentGroup() {
+		return this.currentGroup;
 	}
-	public void setContactGroup(TcsContactGroup contactGroup) {
-		this.contactGroup = contactGroup;
+	public void setCurrentGroup(TcsContactGroup group) {
+		this.currentGroup = group;
+	}
+	
+	private TcsContact currentContact = null;
+	public TcsContact getCurrentContact() {
+		return currentContact;
+	}
+	public void setCurrentContact(TcsContact contact) {
+		this.currentContact = contact;
 	}
 
 	@Override
