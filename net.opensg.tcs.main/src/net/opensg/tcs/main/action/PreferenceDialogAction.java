@@ -1,6 +1,6 @@
 package net.opensg.tcs.main.action;
 
-import net.opensg.tcs.main.preference.GeneralPage;
+import net.opensg.tcs.main.preference.GeneralOptionsPage;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.preference.PreferenceDialog;
@@ -21,7 +21,7 @@ public class PreferenceDialogAction extends Action {
 
 	@Override
 	public void run() {
-		PreferenceDialog pref = PreferencesUtil.createPreferenceDialogOn(shell, GeneralPage.ID, null, null);
+		PreferenceDialog pref = PreferencesUtil.createPreferenceDialogOn(shell, GeneralOptionsPage.ID, null, null);
 		if (pref != null)
 			pref.open();
 

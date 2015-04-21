@@ -14,7 +14,7 @@ import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.ColorFieldEditor;
 import org.eclipse.jface.preference.RadioGroupFieldEditor;
 
-public class GeneralPage extends FieldEditorPreferencePage implements
+public class GeneralOptionsPage extends FieldEditorPreferencePage implements
 		IWorkbenchPreferencePage {
 
 	public static String ID = "net.opensg.tcs.main.preference.GeneralPage";
@@ -25,31 +25,20 @@ public class GeneralPage extends FieldEditorPreferencePage implements
 	private ComboFieldEditor editorSamplePopupType;
 	private ColorFieldEditor editorSamplePopupBackColor;
 	
-	private RadioGroupFieldEditor tableViewerBindingType;
-
-	/**
-	 * @wbp.parser.constructor
-	 */
-	public GeneralPage() {
+	public GeneralOptionsPage() {
 		super(GRID);
-		setTitle("TCS General");
+		setTitle("General Options");
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
-		setDescription("General Preferences for TCS");
+		setDescription("General Options");
 	}
 
-	public GeneralPage(int style) {
+	public GeneralOptionsPage(int style) {
 		super(style);
 	}
 
-	public GeneralPage(String title, int style) {
+	public GeneralOptionsPage(String title, int style) {
 		super(title, style);
-		// TODO Auto-generated constructor stub
 	}
-
-	// public GeneralPage(String title, ImageDescriptor image, int style) {
-	// super(title, image, style);
-	// // TODO Auto-generated constructor stub
-	// }
 
 	@Override
 	public void init(IWorkbench workbench) {
@@ -59,59 +48,36 @@ public class GeneralPage extends FieldEditorPreferencePage implements
 	@Override
 	protected void createFieldEditors() {
 		editorAddToNewTab = new BooleanFieldEditor(
-				PreferenceConstants.PREF_AddToNewTab, "Add To New Tab",
+				PreferenceConstants.KEY_AddEditorToNewTab, "Add To New Tab",
 				getFieldEditorParent());
 		addField(editorAddToNewTab);
 
 		editorSamplePopupField1Name = new StringFieldEditor(
-				PreferenceConstants.PREF_SamplePopupField1Name,
+				PreferenceConstants.KEY_SamplePopupField1Name,
 				"SamplePopup Field1 Caption", -1,
 				StringFieldEditor.VALIDATE_ON_KEY_STROKE,
 				getFieldEditorParent());
 		addField(editorSamplePopupField1Name);
 
 		editorSamplePopupField2Name = new StringFieldEditor(
-				PreferenceConstants.PREF_SamplePopupField2Name,
+				PreferenceConstants.KEY_SamplePopupField2Name,
 				"SamplePopup Field2 Caption", -1,
 				StringFieldEditor.VALIDATE_ON_KEY_STROKE,
 				getFieldEditorParent());
 		addField(editorSamplePopupField2Name);
 
 		editorSamplePopupType = new ComboFieldEditor(
-				PreferenceConstants.PREF_SamplePopupType, "SamplePopup Type",
-				new String[][] { { "name_1", "value_1" },
-						{ "name_2", "value_2" } }, getFieldEditorParent());
+				PreferenceConstants.KEY_SamplePopupType, "SamplePopup Type",
+				new String[][] { 
+						{ "name_1", "value_1" },
+						{ "name_2", "value_2" } }, 
+				getFieldEditorParent());
 		addField(editorSamplePopupType);
 
 		editorSamplePopupBackColor = new ColorFieldEditor(
-				PreferenceConstants.PREF_SamplePopupBackColor,
+				PreferenceConstants.KEY_SamplePopupBackColor,
 				"SamplePopup Background Color", getFieldEditorParent());
 		addField(editorSamplePopupBackColor);
-
-		// TableViewer Binding Options
-//		tableViewerBindingType = new RadioGroupFieldEditor(
-//				PreferenceConstants.PREF_TableViewerBindingType, "TableViewer Binding Type", 1,
-//				new String[][] { 
-//						{ "Normal LabelProvider", "OwnerDraw LabelProvider", "ShowHide Column" },
-//						{ "1", "2", "3" } 
-//				}, 
-//				getFieldEditorParent(),
-//				false);
-//		addField(tableViewerBindingType);
-		
-		
-		tableViewerBindingType = new RadioGroupFieldEditor(
-			PreferenceConstants.PREF_TableViewerBindingType, 
-			"TableViewer Binding Type", 
-			1, 
-			new String[][] {
-					{"Normal LabelProvider", "1"}, 
-					{"OwnerDraw LabelProvider", "2"}, 
-					{"ShowHide Column", "3"}, 
-			}, 
-			getFieldEditorParent(), 
-			false);
-		addField(tableViewerBindingType);
 	}
 
 	@Override

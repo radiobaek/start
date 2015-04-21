@@ -5,12 +5,16 @@ import java.util.List;
 
 import net.opensg.tcs.commons.libs.core.TcsCommon;
 import net.opensg.tcs.commons.libs.core.TreeItemInfo;
+import net.opensg.tcs.main.action.ClearTableViewerAction;
 import net.opensg.tcs.main.application.Activator;
 import net.opensg.tcs.main.model.TcsContact;
 import net.opensg.tcs.main.model.TcsContactGroup;
 import net.opensg.tcs.main.model.sample.TcsAddressDataModel;
+import net.opensg.tcs.main.preference.PreferenceConstants;
 import net.opensg.tcs.multiedit.command.GlobalCommand;
 
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeViewerListener;
@@ -20,10 +24,6 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Tree;
-import org.eclipse.ui.IEditorReference;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 public class NaviView extends ViewPart {
@@ -44,9 +44,10 @@ public class NaviView extends ViewPart {
 		Object[] SampleData = TreeViewerBindingData();
 		treeViewer.setInput(SampleData);
 
-		// Selection service
+		// Selection service 지정
 		getSite().setSelectionProvider(treeViewer);
 		
+		// Listener 지정 - TreeViewer Selection
 		treeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
@@ -87,6 +88,18 @@ public class NaviView extends ViewPart {
 			public void treeCollapsed(TreeExpansionEvent event) {
 			}
 		});
+		
+		// Listener 지정 - Preference Change (TableViewerBindingType)
+		Activator.getDefault().getPreferenceStore().addPropertyChangeListener(new IPropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent event) {
+				if (event.getProperty() == PreferenceConstants.KEY_TableViewerBindingType) {
+					(new ClearTableViewerAction()).run();
+				}
+			}
+		});
+
+
 	}
 
 	public void setFocus() {

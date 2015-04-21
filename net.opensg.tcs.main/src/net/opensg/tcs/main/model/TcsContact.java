@@ -13,4 +13,8 @@ public class TcsContact {
 	public String Address;
 	public String Depart;
 	
+	public String toString() {
+		if (this.Name == null) return "";
+		return this.Name;
+	}
 }

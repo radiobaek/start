@@ -22,6 +22,10 @@ public class TreeItemInfo {
         this.Children = children;
     }
 
+    public String toString() {
+    	if (this.Item == null) return "";
+    	return Item.toString();
+    }
    
     public static List<TreeItemInfo> ListItems(List<?> items) {
         List<TreeItemInfo> resultList = new ArrayList<TreeItemInfo>();

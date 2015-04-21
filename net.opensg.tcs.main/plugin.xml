@@ -5,9 +5,14 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            class="net.opensg.tcs.main.preference.GeneralPage"
+            class="net.opensg.tcs.main.preference.GeneralOptionsPage"
             id="net.opensg.tcs.main.preference.GeneralPage"
             name="GeneralPage">
+      </page>
+      <page
+            class="net.opensg.tcs.main.preference.TableViewerOptionsPage"
+            id="net.opensg.tcs.main.preference.TableViewerOptionsPage"
+            name="TableViewerOptions">
       </page>
    </extension>
    <extension

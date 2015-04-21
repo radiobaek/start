@@ -12,6 +12,11 @@ public class TcsContactGroup {
 	
 	public ArrayList<TcsContact> ContactList;
 	
+	public String toString() {
+		if (this.Name == null) return "";
+		return this.Name;
+	}
+
 	public List<TreeItemInfo> ChildTreeBindingItemList() {
 		List<TreeItemInfo> childList = new ArrayList<TreeItemInfo>();
 		if (this.ContactList != null) {
