@@ -1,11 +1,15 @@
 package net.opensg.tcs.main.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import net.opensg.tcs.commons.libs.core.TreeItemInfo;
 
-public class TcsContactGroup {
+public class TcsContactGroup implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
+
 	public String Name;
 	public String Description;
 	public String Memo;

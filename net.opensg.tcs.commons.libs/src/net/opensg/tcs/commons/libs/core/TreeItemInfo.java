@@ -1,9 +1,13 @@
 package net.opensg.tcs.commons.libs.core;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TreeItemInfo {
+public class TreeItemInfo implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
+
 	public String ItemName = "";
     public Object Item = null;
     public Object Parent = null;

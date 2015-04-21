@@ -12,6 +12,7 @@ import net.opensg.tcs.main.model.TcsContactGroup;
 import net.opensg.tcs.main.model.sample.TcsAddressDataModel;
 import net.opensg.tcs.main.preference.PreferenceConstants;
 import net.opensg.tcs.multiedit.command.GlobalCommand;
+import net.opensg.tcs.multiedit.io.ContRepository;
 
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
@@ -41,8 +42,8 @@ public class NaviView extends ViewPart {
 		treeViewer.setContentProvider(new NaviViewContentProvider());
 		treeViewer.setLabelProvider(new NaviViewLabelProvider());
 
-		Object[] SampleData = TreeViewerBindingData();
-		treeViewer.setInput(SampleData);
+		ContRepository.modelData = TreeViewerBindingData();
+		treeViewer.setInput(ContRepository.modelData);
 
 		// Selection service 지정
 		getSite().setSelectionProvider(treeViewer);
@@ -105,7 +106,7 @@ public class NaviView extends ViewPart {
 	public void setFocus() {
 	}
 
-	private Object[] TreeViewerBindingData() {
+	private List<TreeItemInfo> TreeViewerBindingData() {
 		List<TreeItemInfo> resultList = new ArrayList<TreeItemInfo>();
 		List<TcsContactGroup> SampleDataList = TcsAddressDataModel
 				.BuildSampleContactGroupList();
@@ -113,6 +114,6 @@ public class NaviView extends ViewPart {
 			TreeItemInfo itemInfo = new TreeItemInfo(item.Name, item, null, item.ChildTreeBindingItemList());
 			resultList.add(itemInfo);
 		}
-		return resultList.toArray();
+		return resultList;
 	}
 }

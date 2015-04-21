@@ -1,28 +1,31 @@
 package net.opensg.tcs.multiedit.app;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.List;
 
+import net.opensg.tcs.commons.libs.core.TreeItemInfo;
 import net.opensg.tcs.main.action.ClearTableViewerAction;
 import net.opensg.tcs.main.action.PreferenceDialogAction;
 import net.opensg.tcs.main.action.SamplePopupAction;
 import net.opensg.tcs.main.application.Activator;
 import net.opensg.tcs.main.preference.PreferenceConstants;
+import net.opensg.tcs.multiedit.io.ContRepository;
 import net.opensg.tcs.multiedit.util.GeneralUtil;
 
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.IMenuCreator;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.HelpListener;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.application.ActionBarAdvisor;
@@ -30,6 +33,8 @@ import org.eclipse.ui.application.IActionBarConfigurer;
 
 public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
+	private static String filePath = "C:\\test.bin";
+	
 	public static IActionBarConfigurer CurrentActionConfig;
 
 	public SamplePopupAction samplePopupAction;
@@ -58,6 +63,41 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	protected void fillMenuBar(IMenuManager menuBar) {
 		// MenuBar - General
 		mainMenu_General = new MenuManager("General", "General");
+		
+		Action File_Open = new Action("Read from File") {
+			@Override
+			public void run() {
+				try {
+					FileInputStream fis = new FileInputStream(filePath);
+					ObjectInputStream ois = new ObjectInputStream(fis);
+					ContRepository.modelData = (List<TreeItemInfo>)ois.readObject();
+					ois.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				super.run();
+			}
+		};
+		mainMenu_General.add(File_Open);
+		
+		Action File_Save = new Action("Write to File") {
+			@Override
+			public void run() {
+				FileOutputStream fos;
+				try {
+					fos = new FileOutputStream(filePath);
+					ObjectOutputStream oos = new ObjectOutputStream(fos);
+					oos.writeObject(ContRepository.modelData);
+					oos.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				super.run();
+			}
+		};
+		mainMenu_General.add(File_Save);
+		
+		mainMenu_General.add(new Separator());
 		mainMenu_General.add(samplePopupAction);
 		mainMenu_General.add(prefDialogAction);
 		menuBar.add(mainMenu_General);
