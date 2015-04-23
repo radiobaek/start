@@ -30,9 +30,7 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
-import org.ozsoft.secs4j.ConnectMode;
-import org.ozsoft.secs4j.SecsConfigurationException;
-import org.ozsoft.secs4j.SecsEquipment;
+import org.ozsoft.secs4j.gui.TestTool;
 
 public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
