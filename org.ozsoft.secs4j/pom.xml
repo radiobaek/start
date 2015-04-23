@@ -4,8 +4,7 @@
 	<groupId>hsms</groupId>
 	<artifactId>org.ozsoft.secs4j</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>aaa</name>
-	<description>aaa</description>
+	<name>secs4j</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -43,11 +42,12 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.4</version>
 				<configuration>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
+					<source>1.7</source>
+					<target>1.7</target>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
 
+	<description>secs4j</description>
 </project>
