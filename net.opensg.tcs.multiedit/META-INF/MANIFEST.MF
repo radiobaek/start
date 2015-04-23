@@ -8,5 +8,6 @@ Bundle-Vendor: OpenSG.Net
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  net.opensg.tcs.commons.libs;bundle-version="1.0.0",
- net.opensg.tcs.main;bundle-version="1.0.1"
+ net.opensg.tcs.main;bundle-version="1.0.1",
+ org.ozsoft.secs4j.plugin;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy

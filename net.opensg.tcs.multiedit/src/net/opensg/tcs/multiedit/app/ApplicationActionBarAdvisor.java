@@ -30,19 +30,22 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
+import org.ozsoft.secs4j.ConnectMode;
+import org.ozsoft.secs4j.SecsConfigurationException;
+import org.ozsoft.secs4j.SecsEquipment;
 
 public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
 	public static IActionBarConfigurer CurrentActionConfig;
 
+	public MenuManager mainMenu_General;
+	public MenuManager mainMenu_TableViewer;
+	public MenuManager mainMenu_Secs;
+
 	public SamplePopupAction samplePopupAction;
 	public PreferenceDialogAction prefDialogAction;
 	private Action fileOpenAction;
 	private Action fileSaveAction;
-
-	public MenuManager mainMenu_General;
-
-	public MenuManager mainMenu_TableViewer;
 	public ClearTableViewerAction mainMenuAction_ClearTableViewer;
 
 	public ApplicationActionBarAdvisor(IActionBarConfigurer configurer) {
@@ -217,6 +220,20 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		mainMenu_TableViewer.add(TableViewer_BindingOption_CellEditorPerRow);
 
 		menuBar.add(mainMenu_TableViewer);
+
+		// MenuBar - Secs
+		mainMenu_Secs = new MenuManager("Secs", "Secs");
+		Action Secs_Server = new Action("Start Server") {
+			@Override
+			public void run() {
+				TestTool tool = new TestTool();
+				tool.enable();
+				super.run();
+			}
+		};
+		mainMenu_Secs.add(Secs_Server);
+
+		menuBar.add(mainMenu_Secs);
 	}
 
 	@Override
