@@ -488,7 +488,7 @@ public class TestTool implements SecsEquipmentListener {
         frame.setVisible(true);
     }
     
-    private void enable() {
+    public void enable() {
         enableButton.setEnabled(false);
         String host = hostText.getText();
         int port = Integer.parseInt(portText.getText());
@@ -508,7 +508,7 @@ public class TestTool implements SecsEquipmentListener {
         }
     }
     
-    private void disable() {
+    public void disable() {
         disableButton.setEnabled(false);
         try {
             equipment.setEnabled(false);

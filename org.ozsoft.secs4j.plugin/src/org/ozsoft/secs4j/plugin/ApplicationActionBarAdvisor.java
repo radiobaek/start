@@ -1,9 +1,12 @@
 package org.ozsoft.secs4j.plugin;
 
+import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
+import org.ozsoft.secs4j.gui.TestTool;
 
 public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
@@ -15,6 +18,15 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
     }
 
     protected void fillMenuBar(IMenuManager menuBar) {
+		MenuManager mainMenu_General = new MenuManager("Server", "Server");
+		mainMenu_General.add(new Action("Start") {
+			@Override
+			public void run() {
+				TestTool tool = new TestTool();
+				tool.enable();
+			}
+		});
+		menuBar.add(mainMenu_General);
     }
     
 }

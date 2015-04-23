@@ -5,8 +5,7 @@ Bundle-SymbolicName: org.ozsoft.secs4j.plugin;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.ozsoft.secs4j.plugin.Activator
 Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime,
- net.opensg.tcs.commons.libs;bundle-version="1.0.0"
+ org.eclipse.core.runtime
 Bundle-ActivationPolicy: lazy
 Export-Package: org.ozsoft.secs4j,
  org.ozsoft.secs4j.format,
@@ -14,3 +13,10 @@ Export-Package: org.ozsoft.secs4j,
  org.ozsoft.secs4j.message,
  org.ozsoft.secs4j.plugin,
  org.ozsoft.secs4j.util
+Bundle-ClassPath: .,
+ libs/commons-io-2.4.jar,
+ libs/commons-lang-2.4.jar,
+ libs/commons-logging-1.1.1.jar,
+ libs/joda-time-2.3.jar,
+ libs/log4j-1.2.17.jar
+
