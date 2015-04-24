@@ -90,7 +90,6 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		fileSaveAction = new Action("Write to File") {
 			@Override
 			public void run() {
-				FileOutputStream fos;
 				try {
 					String filePath = ContRepository.getInstance()
 							.getModelFilePath();
