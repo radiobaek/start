@@ -3,7 +3,8 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Commons
 Bundle-SymbolicName: net.opensg.commons
 Bundle-Version: 1.0.0
-Bundle-ClassPath: libs/commons-io-2.4.jar,
+Bundle-ClassPath: .,
+ libs/commons-io-2.4.jar,
  libs/commons-lang-2.4.jar,
  libs/commons-logging-1.1.1.jar,
  libs/joda-time-2.3.jar,
