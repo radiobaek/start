@@ -225,7 +225,6 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 			@Override
 			public void run() {
 				TestTool tool = new TestTool();
-				tool.enable();
 				super.run();
 			}
 		};
