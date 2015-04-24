@@ -6,8 +6,8 @@ Bundle-Version: 1.0.1.qualifier
 Bundle-Activator: net.opensg.tcs.main.application.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- net.opensg.tcs.commons.libs;bundle-version="1.0.0",
- org.eclipse.ui.workbench
+ org.eclipse.ui.workbench,
+ net.opensg.tcs.commons.libs;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: opensg.net
 Export-Package: net.opensg.tcs.main.action,

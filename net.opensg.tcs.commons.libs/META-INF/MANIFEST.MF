@@ -6,7 +6,8 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: net.opensg.tcs.commons.libs.core.Activator
 Bundle-Vendor: opensg.net
 Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime
+ org.eclipse.core.runtime,
+ net.opensg.commons;bundle-version="1.0.0";visibility:=reexport
 Bundle-ActivationPolicy: lazy
 Export-Package: net.opensg.tcs.commons.libs.core,
  net.opensg.tcs.commons.libs.ui
