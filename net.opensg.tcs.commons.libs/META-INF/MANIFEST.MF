@@ -11,9 +11,3 @@ Require-Bundle: org.eclipse.ui,
 Bundle-ActivationPolicy: lazy
 Export-Package: net.opensg.tcs.commons.libs.core,
  net.opensg.tcs.commons.libs.ui
-Bundle-ClassPath: .,
- libs/apache/commons/commons-io-2.4.jar,
- libs/apache/commons/commons-lang-2.4.jar,
- libs/apache/commons/commons-logging-1.1.1.jar,
- libs/apache/commons/joda-time-2.3.jar,
- libs/apache/log4j/log4j-1.2.17.jar
