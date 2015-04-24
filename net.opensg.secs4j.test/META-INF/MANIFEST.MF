@@ -8,3 +8,4 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  net.opensg.commons;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
+Export-Package: net.opensg.secs4j.test
