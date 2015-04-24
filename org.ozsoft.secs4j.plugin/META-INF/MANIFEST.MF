@@ -1,8 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: secs4j Plugin
-Bundle-SymbolicName: org.ozsoft.secs4j.plugin;singleton:=true
-Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: org.ozsoft.secs4j.plugin.Activator
-Bundle-ActivationPolicy: lazy
-
