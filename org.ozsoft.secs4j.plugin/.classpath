@@ -3,12 +3,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/net.opensg.tcs.commons.libs"/>
-	<classpathentry kind="lib" path="/net.opensg.tcs.commons.libs/libs/apache/commons/commons-io-2.4.jar"/>
-	<classpathentry kind="lib" path="/net.opensg.tcs.commons.libs/libs/apache/commons/commons-lang-2.4.jar"/>
-	<classpathentry kind="lib" path="/net.opensg.tcs.commons.libs/libs/apache/commons/commons-logging-1.1.1.jar"/>
-	<classpathentry kind="lib" path="/net.opensg.tcs.commons.libs/libs/apache/commons/joda-time-2.3.jar"/>
-	<classpathentry kind="lib" path="/net.opensg.tcs.commons.libs/libs/apache/log4j/log4j-1.2.17.jar"/>
 	<classpathentry kind="lib" path="libs/commons-io-2.4.jar"/>
 	<classpathentry kind="lib" path="libs/commons-lang-2.4.jar"/>
 	<classpathentry kind="lib" path="libs/commons-logging-1.1.1.jar"/>

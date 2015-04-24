@@ -19,5 +19,17 @@
             id="org.ozsoft.secs4j.plugin.perspective">
       </perspective>
    </extension>
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="org.ozsoft.secs4j.plugin.application"
+            name="org.ozsoft.secs4j.plugin.product">
+         <property
+               name="appName"
+               value="org.ozsoft.secs4j.plugin.product">
+         </property>
+      </product>
+   </extension>
 
 </plugin>
