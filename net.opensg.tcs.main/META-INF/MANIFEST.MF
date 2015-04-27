@@ -10,8 +10,7 @@ Require-Bundle: org.eclipse.ui,
  net.opensg.tcs.commons.libs;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: opensg.net
-Export-Package: net.opensg.tcs.main.action,
- net.opensg.tcs.main.application,
+Export-Package: net.opensg.tcs.main.application,
  net.opensg.tcs.main.model,
  net.opensg.tcs.main.model.sample,
  net.opensg.tcs.main.preference,
