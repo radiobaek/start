@@ -48,6 +48,10 @@ public class ContEditor extends EditorPart {
 	private ContEditorCellEditingSupport columnEditingSupportEmail = null;
 	private ContEditorCellEditingSupport columnEditingSupportPhone = null;
 
+	public TableViewer getTableViewer() {
+		return tableViewer;
+	}
+
 	public static ContEditor getCurrentEditor() {
 		IEditorPart editor = Activator.getDefault().getWorkbench()
 				.getActiveWorkbenchWindow().getActivePage().getActiveEditor();

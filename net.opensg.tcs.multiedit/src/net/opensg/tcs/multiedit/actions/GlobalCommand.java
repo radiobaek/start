@@ -1,4 +1,4 @@
-package net.opensg.tcs.multiedit.command;
+package net.opensg.tcs.multiedit.actions;
 
 import net.opensg.tcs.main.model.TcsContact;
 import net.opensg.tcs.main.model.TcsContactGroup;

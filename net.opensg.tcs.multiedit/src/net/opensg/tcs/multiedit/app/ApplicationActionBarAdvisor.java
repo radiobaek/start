@@ -1,32 +1,42 @@
 package net.opensg.tcs.multiedit.app;
 
-import java.io.FileOutputStream;
 import java.util.Arrays;
 import java.util.List;
 
-import net.opensg.tcs.main.action.ClearTableViewerAction;
-import net.opensg.tcs.main.action.PreferenceDialogAction;
-import net.opensg.tcs.main.action.SamplePopupAction;
 import net.opensg.tcs.main.application.Activator;
 import net.opensg.tcs.main.preference.PreferenceConstants;
+import net.opensg.tcs.multiedit.actions.ClearTableViewerAction;
+import net.opensg.tcs.multiedit.actions.PreferenceDialogAction;
+import net.opensg.tcs.multiedit.actions.SamplePopupAction;
 import net.opensg.tcs.multiedit.io.ContRepository;
 import net.opensg.tcs.multiedit.util.GeneralUtil;
 
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.ActionContributionItem;
+import org.eclipse.jface.action.ControlContribution;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.ICoolBarManager;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.action.ToolBarContributionItem;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.CoolBar;
+import org.eclipse.swt.widgets.CoolItem;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
@@ -42,9 +52,19 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
 	public SamplePopupAction samplePopupAction;
 	public PreferenceDialogAction prefDialogAction;
+	public ClearTableViewerAction mainMenuAction_ClearTableViewer;
+
 	private Action fileOpenAction;
 	private Action fileSaveAction;
-	public ClearTableViewerAction mainMenuAction_ClearTableViewer;
+	private Action TableViewer_BindingOption_Normal;	
+	private Action tableViewer_BindingOption_OwnerDraw;	
+	private Action TableViewer_BindingOption_ToolTip;	
+	private Action TableViewer_BindingOption_ShowHideColumn;	
+	private Action TableViewer_BindingOption_ComboCellEditor;	
+	private Action TableViewer_BindingOption_CellEditorPerRow;	
+	private Action Secs_Server;	
+	
+	private ControlContribution comboCI;
 
 	public ApplicationActionBarAdvisor(IActionBarConfigurer configurer) {
 		super(configurer);
@@ -52,20 +72,23 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	}
 
 	protected void makeActions(IWorkbenchWindow window) {
-		samplePopupAction = new SamplePopupAction();
+		samplePopupAction = new SamplePopupAction(window);
 		register(samplePopupAction);
 		prefDialogAction = new PreferenceDialogAction();
 		register(prefDialogAction);
-
 		mainMenuAction_ClearTableViewer = new ClearTableViewerAction();
 		register(mainMenuAction_ClearTableViewer);
-	}
 
-	protected void fillMenuBar(IMenuManager menuBar) {
-		// MenuBar - General
-		mainMenu_General = new MenuManager("General", "General");
-
-		fileOpenAction = new Action("Read from File") {
+		comboCI = new ControlContribution("control2") {
+			protected Control createControl(Composite parent) {
+				Combo c = new Combo(parent, SWT.READ_ONLY);
+				c.add("one");
+				c.add("two");
+				c.add("three");
+				return c;
+			}
+		};
+		fileOpenAction = new Action("Read") {
 			@Override
 			public void run() {
 				try {
@@ -85,8 +108,6 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 				super.run();
 			}
 		};
-		mainMenu_General.add(fileOpenAction);
-
 		fileSaveAction = new Action("Write to File") {
 			@Override
 			public void run() {
@@ -113,6 +134,84 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 				super.run();
 			}
 		};
+		
+		TableViewer_BindingOption_Normal = new Action("BindingOption : Normal") {
+			@Override
+			public void run() {
+				GeneralUtil.setPreferenceString(
+						PreferenceConstants.KEY_TableViewerBindingType,
+						PreferenceConstants.VAL_TableViewerBindingType_Normal);
+				super.run();
+			}
+		};
+		tableViewer_BindingOption_OwnerDraw = new Action("BindingOption : OwnerDraw") {
+			@Override
+			public void run() {
+				GeneralUtil
+						.setPreferenceString(
+								PreferenceConstants.KEY_TableViewerBindingType,
+								PreferenceConstants.VAL_TableViewerBindingType_OwnerDraw);
+				super.run();
+			}
+		};
+		TableViewer_BindingOption_ToolTip = new Action("BindingOption : ToolTip Column") {
+			@Override
+			public void run() {
+				GeneralUtil
+						.setPreferenceString(
+								PreferenceConstants.KEY_TableViewerBindingType,
+								PreferenceConstants.VAL_TableViewerBindingType_ToolTipColumn);
+				super.run();
+			}
+		};
+		TableViewer_BindingOption_ShowHideColumn = new Action("BindingOption : ShowHide Column") {
+			@Override
+			public void run() {
+				GeneralUtil
+						.setPreferenceString(
+								PreferenceConstants.KEY_TableViewerBindingType,
+								PreferenceConstants.VAL_TableViewerBindingType_ShowHideColumn);
+				super.run();
+			}
+		};
+		TableViewer_BindingOption_ComboCellEditor = new Action("BindingOption : Combo CellEditor", IAction.AS_CHECK_BOX) {
+			@Override
+			public void runWithEvent(Event event) {
+				boolean checked_ComboCellEditor = GeneralUtil
+						.getPreferenceBool(PreferenceConstants.KEY_TableViewerOption_ComboCellEditor);
+				GeneralUtil
+						.setPreferenceBool(
+								PreferenceConstants.KEY_TableViewerOption_ComboCellEditor,
+								!checked_ComboCellEditor);
+				super.runWithEvent(event);
+			}
+		};
+		TableViewer_BindingOption_CellEditorPerRow = new Action("BindingOption : CellEditor Per Row", IAction.AS_CHECK_BOX) {
+			@Override
+			public void runWithEvent(Event event) {
+				boolean checked_CellEditorPerRow = GeneralUtil
+						.getPreferenceBool(PreferenceConstants.KEY_TableViewerOption_CellEditorPerRow);
+				GeneralUtil
+						.setPreferenceBool(
+								PreferenceConstants.KEY_TableViewerOption_CellEditorPerRow,
+								!checked_CellEditorPerRow);
+				super.runWithEvent(event);
+			}
+		};
+		Secs_Server = new Action("Start Server") {
+			@Override
+			public void run() {
+				TestTool tool = new TestTool();
+				super.run();
+			}
+		};
+	}
+
+	protected void fillMenuBar(IMenuManager menuBar) {
+		// MenuBar - General
+		mainMenu_General = new MenuManager("General", "General");
+
+		mainMenu_General.add(fileOpenAction);
 		mainMenu_General.add(fileSaveAction);
 
 		mainMenu_General.add(new Separator());
@@ -125,91 +224,17 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		mainMenu_TableViewer.add(mainMenuAction_ClearTableViewer);
 		mainMenu_TableViewer.add(new Separator());
 
-		Action TableViewer_BindingOption_Normal = new Action(
-				"BindingOption : Normal") {
-			@Override
-			public void run() {
-				GeneralUtil.setPreferenceString(
-						PreferenceConstants.KEY_TableViewerBindingType,
-						PreferenceConstants.VAL_TableViewerBindingType_Normal);
-				super.run();
-			}
-		};
 		mainMenu_TableViewer.add(TableViewer_BindingOption_Normal);
-
-		Action tableViewer_BindingOption_OwnerDraw = new Action(
-				"BindingOption : OwnerDraw") {
-			@Override
-			public void run() {
-				GeneralUtil
-						.setPreferenceString(
-								PreferenceConstants.KEY_TableViewerBindingType,
-								PreferenceConstants.VAL_TableViewerBindingType_OwnerDraw);
-				super.run();
-			}
-		};
 		mainMenu_TableViewer.add(tableViewer_BindingOption_OwnerDraw);
-
-		Action TableViewer_BindingOption_ToolTip = new Action(
-				"BindingOption : ToolTip Column") {
-			@Override
-			public void run() {
-				GeneralUtil
-						.setPreferenceString(
-								PreferenceConstants.KEY_TableViewerBindingType,
-								PreferenceConstants.VAL_TableViewerBindingType_ToolTipColumn);
-				super.run();
-			}
-		};
 		mainMenu_TableViewer.add(TableViewer_BindingOption_ToolTip);
-
-		Action TableViewer_BindingOption_ShowHideColumn = new Action(
-				"BindingOption : ShowHide Column") {
-			@Override
-			public void run() {
-				GeneralUtil
-						.setPreferenceString(
-								PreferenceConstants.KEY_TableViewerBindingType,
-								PreferenceConstants.VAL_TableViewerBindingType_ShowHideColumn);
-				super.run();
-			}
-		};
 		mainMenu_TableViewer.add(TableViewer_BindingOption_ShowHideColumn);
-
 		mainMenu_TableViewer.add(new Separator());
 
-		Action TableViewer_BindingOption_ComboCellEditor = new Action(
-				"BindingOption : Combo CellEditor", SWT.CHECK) {
-			@Override
-			public void runWithEvent(Event event) {
-				boolean checked_ComboCellEditor = GeneralUtil
-						.getPreferenceBool(PreferenceConstants.KEY_TableViewerOption_ComboCellEditor);
-				GeneralUtil
-						.setPreferenceBool(
-								PreferenceConstants.KEY_TableViewerOption_ComboCellEditor,
-								!checked_ComboCellEditor);
-				super.runWithEvent(event);
-			}
-		};
 		boolean checked_ComboCellEditor = GeneralUtil
 				.getPreferenceBool(PreferenceConstants.KEY_TableViewerOption_ComboCellEditor);
 		TableViewer_BindingOption_ComboCellEditor
 				.setChecked(checked_ComboCellEditor);
 		mainMenu_TableViewer.add(TableViewer_BindingOption_ComboCellEditor);
-
-		Action TableViewer_BindingOption_CellEditorPerRow = new Action(
-				"BindingOption : CellEditor Per Row", SWT.CHECK) {
-			@Override
-			public void runWithEvent(Event event) {
-				boolean checked_CellEditorPerRow = GeneralUtil
-						.getPreferenceBool(PreferenceConstants.KEY_TableViewerOption_CellEditorPerRow);
-				GeneralUtil
-						.setPreferenceBool(
-								PreferenceConstants.KEY_TableViewerOption_CellEditorPerRow,
-								!checked_CellEditorPerRow);
-				super.runWithEvent(event);
-			}
-		};
 		boolean checked_CellEditorPerRow = GeneralUtil
 				.getPreferenceBool(PreferenceConstants.KEY_TableViewerOption_CellEditorPerRow);
 		TableViewer_BindingOption_CellEditorPerRow
@@ -220,13 +245,6 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
 		// MenuBar - Secs
 		mainMenu_Secs = new MenuManager("Secs", "Secs");
-		Action Secs_Server = new Action("Start Server") {
-			@Override
-			public void run() {
-				TestTool tool = new TestTool();
-				super.run();
-			}
-		};
 		mainMenu_Secs.add(Secs_Server);
 
 		menuBar.add(mainMenu_Secs);
@@ -234,13 +252,64 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
 	@Override
 	protected void fillCoolBar(ICoolBarManager coolBar) {
-		//super.fillCoolBar(coolBar);
-        IToolBarManager toolbar = new ToolBarManager(SWT.FLAT | SWT.RIGHT);
-        coolBar.add(new ToolBarContributionItem(toolbar, "main"));   
-        toolbar.add(fileOpenAction);
-        toolbar.add(fileSaveAction);
+		// CoolBar 표시는 기본로직만 확인하고 Skip
+		//this.createCoolbarByManager(coolBar);
+		//this.createCoolbarByItem(coolBar);
+		this.createCoolbarSimple(coolBar);
 	}
 
+	private void createCoolbarSimple(ICoolBarManager coolBar) {
+		IToolBarManager toolbar = new ToolBarManager(coolBar.getStyle() | SWT.RIGHT);
+		coolBar.add(toolbar);
+
+		ActionContributionItem samplePopupCI = new ActionContributionItem(samplePopupAction);
+		samplePopupCI.setMode(ActionContributionItem.MODE_FORCE_TEXT);                        
+        toolbar.add(samplePopupCI);
+	}
+	private void createCoolbarByItem(ICoolBarManager coolBar) {
+		Shell shell = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getShell();
+		CoolBar bar = new CoolBar(shell, SWT.BORDER);
+		for (int i=0; i<2; i++) {
+			CoolItem item = new CoolItem (bar, SWT.NONE);
+			Button button = new Button (bar, SWT.PUSH);
+			button.setText ("Button " + i);
+			Point size = button.computeSize (SWT.DEFAULT, SWT.DEFAULT);
+			item.setPreferredSize (item.computeSize (size.x, size.y));
+			item.setControl (button);
+		}
+		Rectangle clientArea = shell.getClientArea();
+		bar.setLocation (clientArea.x, clientArea.y);
+		bar.pack ();
+	}
+	private void createCoolbarByManager(ICoolBarManager coolBar) {
+		//IToolBarManager toolbar = new ToolBarManager(SWT.FLAT | SWT.WRAP);
+		IToolBarManager toolbar = new ToolBarManager(coolBar.getStyle() | SWT.BOTTOM);
+		coolBar.add(toolbar);
+
+		toolbar.add(fileOpenAction);
+		toolbar.add(fileSaveAction);
+		toolbar.add(new Separator());
+
+		toolbar.add(samplePopupAction);
+		toolbar.add(prefDialogAction);
+		toolbar.add(new Separator());
+
+		toolbar.add(mainMenuAction_ClearTableViewer);
+		toolbar.add(new Separator());
+
+		toolbar.add(TableViewer_BindingOption_Normal);
+		toolbar.add(tableViewer_BindingOption_OwnerDraw);
+		toolbar.add(TableViewer_BindingOption_ToolTip);
+		toolbar.add(TableViewer_BindingOption_ShowHideColumn);
+		toolbar.add(new Separator());
+
+		toolbar.add(TableViewer_BindingOption_ComboCellEditor);
+		toolbar.add(TableViewer_BindingOption_CellEditorPerRow);
+		toolbar.add(new Separator());
+
+		toolbar.add(Secs_Server);
+	}
+	
 	@Override
 	protected void fillStatusLine(IStatusLineManager statusLine) {
 		super.fillStatusLine(statusLine);
@@ -274,4 +343,6 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 					}
 				});
 	}
+
+
 }

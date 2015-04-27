@@ -7,13 +7,13 @@ import java.util.Observer;
 
 import net.opensg.tcs.commons.libs.core.TcsCommon;
 import net.opensg.tcs.commons.libs.core.TreeItemInfo;
-import net.opensg.tcs.main.action.ClearTableViewerAction;
 import net.opensg.tcs.main.application.Activator;
 import net.opensg.tcs.main.model.TcsContact;
 import net.opensg.tcs.main.model.TcsContactGroup;
 import net.opensg.tcs.main.model.sample.TcsAddressDataModel;
 import net.opensg.tcs.main.preference.PreferenceConstants;
-import net.opensg.tcs.multiedit.command.GlobalCommand;
+import net.opensg.tcs.multiedit.actions.ClearTableViewerAction;
+import net.opensg.tcs.multiedit.actions.GlobalCommand;
 import net.opensg.tcs.multiedit.io.ContRepository;
 
 import org.eclipse.jface.util.IPropertyChangeListener;
@@ -25,14 +25,13 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeExpansionEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.part.ViewPart;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.custom.CLabel;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 public class NaviView extends ViewPart {
