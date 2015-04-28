@@ -14,21 +14,17 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 public class MessagePopupAction extends Action implements ISelectionListener, IWorkbenchAction {
 	public static String ID = "net.opensg.tcs.multiedit.MessagePopupAction";
 	private final IWorkbenchWindow window;
-	public MessagePopupAction(String text, IWorkbenchWindow window) {
+	public MessagePopupAction(IWorkbenchWindow window, String text) {
 		this.window = window;
 		setId(ID);
 		//setActionDefinitionId(ID);
-		setText("OpenMessage");
+		setText(text);
 		setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/alt_window_16.gif"));
-		window.getSelectionService().addSelectionListener(this);
-//		setImageDescriptor(Activator.imageDescriptorFromPlugin(
-//				Activator.PLUGIN_ID, "icons/add_contact.gif"));
 		window.getSelectionService().addSelectionListener(this);
 	}
 
 	public void run() {
-		MessageDialog.openInformation(window.getShell(), "Open",
-				"Open Message Dialog!");
+		MessageDialog.openInformation(window.getShell(), "Open", "Open Message Dialog!");
 	}
 
 	@Override

@@ -6,9 +6,10 @@ import java.util.List;
 import net.opensg.tcs.main.application.Activator;
 import net.opensg.tcs.main.preference.PreferenceConstants;
 import net.opensg.tcs.multiedit.actions.ClearTableViewerAction;
+import net.opensg.tcs.multiedit.actions.FileOpenAction;
+import net.opensg.tcs.multiedit.actions.FileSaveAction;
 import net.opensg.tcs.multiedit.actions.PreferenceDialogAction;
 import net.opensg.tcs.multiedit.actions.SamplePopupAction;
-import net.opensg.tcs.multiedit.io.ContRepository;
 import net.opensg.tcs.multiedit.util.GeneralUtil;
 
 import org.eclipse.jface.action.Action;
@@ -35,7 +36,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.CoolBar;
 import org.eclipse.swt.widgets.CoolItem;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.application.ActionBarAdvisor;
@@ -79,6 +79,11 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		mainMenuAction_ClearTableViewer = new ClearTableViewerAction();
 		register(mainMenuAction_ClearTableViewer);
 
+		fileOpenAction = new FileOpenAction(window, "Read from File", "icons/open.gif");
+		register(fileOpenAction);
+		fileSaveAction = new FileSaveAction(window, "Save to File", "icons/save.gif");
+		register(fileSaveAction);
+
 		comboCI = new ControlContribution("control2") {
 			protected Control createControl(Composite parent) {
 				Combo c = new Combo(parent, SWT.READ_ONLY);
@@ -86,52 +91,6 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 				c.add("two");
 				c.add("three");
 				return c;
-			}
-		};
-		fileOpenAction = new Action("Read") {
-			@Override
-			public void run() {
-				try {
-					FileDialog fileDialog = new FileDialog(
-							GeneralUtil.getCurrentShell(), SWT.OPEN);
-					fileDialog.setText("Select Data File");
-					// fileDialog.setFilterPath("C:/");
-					String[] filterExt = { "*.bin", "*.*" };
-					fileDialog.setFilterExtensions(filterExt);
-					String filePath = fileDialog.open();
-					if (filePath != "") {
-						ContRepository.getInstance().readData(filePath);
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				super.run();
-			}
-		};
-		fileSaveAction = new Action("Write to File") {
-			@Override
-			public void run() {
-				try {
-					String filePath = ContRepository.getInstance()
-							.getModelFilePath();
-					if (filePath == "") {
-						FileDialog fileDialog = new FileDialog(
-								GeneralUtil.getCurrentShell(), SWT.SAVE);
-						fileDialog
-								.setFilterNames(new String[] { "Data Files (*.bin)" });
-						fileDialog
-								.setFilterExtensions(new String[] { "*.bin" });
-						fileDialog.setText("Select Data File to save");
-						// fileDialog.setFilterPath(folder.getRawLocation().toString());
-						filePath = fileDialog.open();
-					}
-					if (filePath != "") {
-						ContRepository.getInstance().writeData(filePath);
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				super.run();
 			}
 		};
 		
@@ -252,62 +211,23 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
 	@Override
 	protected void fillCoolBar(ICoolBarManager coolBar) {
-		// CoolBar 표시는 기본로직만 확인하고 Skip
-		//this.createCoolbarByManager(coolBar);
-		//this.createCoolbarByItem(coolBar);
-		this.createCoolbarSimple(coolBar);
-	}
-
-	private void createCoolbarSimple(ICoolBarManager coolBar) {
 		IToolBarManager toolbar = new ToolBarManager(coolBar.getStyle() | SWT.RIGHT);
 		coolBar.add(toolbar);
+		ActionContributionItem aci;
 
-		ActionContributionItem samplePopupCI = new ActionContributionItem(samplePopupAction);
-		samplePopupCI.setMode(ActionContributionItem.MODE_FORCE_TEXT);                        
-        toolbar.add(samplePopupCI);
-	}
-	private void createCoolbarByItem(ICoolBarManager coolBar) {
-		Shell shell = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getShell();
-		CoolBar bar = new CoolBar(shell, SWT.BORDER);
-		for (int i=0; i<2; i++) {
-			CoolItem item = new CoolItem (bar, SWT.NONE);
-			Button button = new Button (bar, SWT.PUSH);
-			button.setText ("Button " + i);
-			Point size = button.computeSize (SWT.DEFAULT, SWT.DEFAULT);
-			item.setPreferredSize (item.computeSize (size.x, size.y));
-			item.setControl (button);
-		}
-		Rectangle clientArea = shell.getClientArea();
-		bar.setLocation (clientArea.x, clientArea.y);
-		bar.pack ();
-	}
-	private void createCoolbarByManager(ICoolBarManager coolBar) {
-		//IToolBarManager toolbar = new ToolBarManager(SWT.FLAT | SWT.WRAP);
-		IToolBarManager toolbar = new ToolBarManager(coolBar.getStyle() | SWT.BOTTOM);
-		coolBar.add(toolbar);
-
-		toolbar.add(fileOpenAction);
-		toolbar.add(fileSaveAction);
-		toolbar.add(new Separator());
-
-		toolbar.add(samplePopupAction);
-		toolbar.add(prefDialogAction);
-		toolbar.add(new Separator());
-
-		toolbar.add(mainMenuAction_ClearTableViewer);
-		toolbar.add(new Separator());
-
-		toolbar.add(TableViewer_BindingOption_Normal);
-		toolbar.add(tableViewer_BindingOption_OwnerDraw);
-		toolbar.add(TableViewer_BindingOption_ToolTip);
-		toolbar.add(TableViewer_BindingOption_ShowHideColumn);
-		toolbar.add(new Separator());
-
-		toolbar.add(TableViewer_BindingOption_ComboCellEditor);
-		toolbar.add(TableViewer_BindingOption_CellEditorPerRow);
-		toolbar.add(new Separator());
-
-		toolbar.add(Secs_Server);
+		aci = new ActionContributionItem(fileOpenAction);
+		aci.setMode(ActionContributionItem.MODE_FORCE_TEXT);                        
+        toolbar.add(aci);
+		aci = new ActionContributionItem(fileSaveAction);
+		aci.setMode(ActionContributionItem.MODE_FORCE_TEXT);                        
+        toolbar.add(aci);
+        toolbar.add(new Separator());
+		aci = new ActionContributionItem(samplePopupAction);
+		aci.setMode(ActionContributionItem.MODE_FORCE_TEXT);                        
+        toolbar.add(aci);
+		aci = new ActionContributionItem(prefDialogAction);
+		aci.setMode(ActionContributionItem.MODE_FORCE_TEXT);                        
+        toolbar.add(aci);
 	}
 	
 	@Override

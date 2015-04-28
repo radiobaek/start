@@ -49,29 +49,4 @@ public class SamplePopupAction extends Action implements ISelectionListener, IWo
 
 }
 
-// public class SamplePopupAction extends Action implements ISelectionListener,
-// IWorkbenchAction {
-//
-// private IWorkbenchWindow window;
-// public static String ID = "SamplePopupAction";
-//
-// public SamplePopupAction(IWorkbenchWindow window) {
-// this.window = window;
-// setId(ID);
-// }
-//
-// @Override
-// public void run() {
-// MessageDialog.openInformation(null, "Information", "SamplePopupAction");
-// super.run();
-// }
-//
-// @Override
-// public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-// }
-//
-// @Override
-// public void dispose() {
-// }
-// }
 

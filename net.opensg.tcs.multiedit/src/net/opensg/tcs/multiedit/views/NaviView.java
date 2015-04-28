@@ -1,5 +1,6 @@
 package net.opensg.tcs.multiedit.views;
 
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -34,7 +35,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-public class NaviView extends ViewPart {
+public class NaviView extends ViewPart implements PropertyChangeListener {
 
 	public static String ID = "net.opensg.tcs.multiedit.views.NaviView";
 	
@@ -132,23 +133,15 @@ public class NaviView extends ViewPart {
 		});
 
 		// Data Observer 지정
-		ContRepository.getInstance().addObserver(new Observer() {
-			@Override
-			public void update(Observable arg0, Object arg1) {
-				String changeReason = (String)arg1;
-				switch (changeReason) {
-				case ContRepository.dataChangeReason_ModelData:
-					NaviView.this.bindData_TreeViewer();
-					break;
-				case ContRepository.dataChangeReason_FilePath:
-					NaviView.this.bindData_FilePath();
-					break;
-				}
-			}
-		});
-		
+		ContRepository.getInstance().addPropertyChangeListener(this);
 	}
 
+	@Override
+	public void dispose() {
+		//ContRepository.getInstance().removePropertyChangeListener();
+		super.dispose();
+	}
+	
 	public void setFocus() {
 	}
 
@@ -171,6 +164,22 @@ public class NaviView extends ViewPart {
 	}
 	public void bindData_FilePath() {
 		this.txtFilePath.setText(ContRepository.getInstance().getModelFilePath());
+	}
+
+	@Override
+	public void propertyChange(java.beans.PropertyChangeEvent event) {
+		switch (event.getPropertyName()) {
+		case "modelData":
+			System.out.println("NaviView: propertyChange modelData ");
+			NaviView.this.bindData_TreeViewer();
+			(new ClearTableViewerAction()).run();
+			break;
+		case "modelFilePath":
+			System.out.println("NaviView: propertyChange modelFilePath ");
+			NaviView.this.bindData_FilePath();
+			(new ClearTableViewerAction()).run();
+			break;
+		}
 	}
 	
 }

@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import net.opensg.tcs.main.model.TcsContact;
 import net.opensg.tcs.main.preference.PreferenceConstants;
+import net.opensg.tcs.multiedit.io.ContRepository;
 import net.opensg.tcs.multiedit.util.GeneralUtil;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -112,21 +113,29 @@ public class ContEditorCellEditingSupport extends EditingSupport {
 
 	@Override
 	protected void setValue(Object element, Object value) {
-		String text = this.column.getColumn().getText();
-		switch (text) {
+		String columnName = this.column.getColumn().getText();
+		String oldValue = "";
+		String newValue = value.toString();
+		switch (columnName) {
 		case "Name":
-			((TcsContact) element).Name = value.toString();
+			oldValue = ((TcsContact) element).Name;
+			if (newValue != oldValue) ((TcsContact) element).Name = newValue;
 			break;
 		case "E-Mail":
-			((TcsContact) element).Email = value.toString();
+			oldValue = ((TcsContact) element).Email;
+			if (newValue != oldValue) ((TcsContact) element).Email = newValue;
 			break;
 		case "Phone":
-			((TcsContact) element).PhoneMobile = value.toString();
+			oldValue = ((TcsContact) element).PhoneMobile;
+			if (newValue != oldValue) ((TcsContact) element).PhoneMobile = newValue;
 			break;
 		default:
 			break;
 		}
-		getViewer().update(element, null);
+		if (!newValue.equals(oldValue)) {
+			getViewer().update(element, null);
+			ContRepository.getInstance().notifyUpdate();
+		}
 	}
 	
 }

@@ -3,6 +3,7 @@ package net.opensg.tcs.multiedit.views;
 import net.opensg.tcs.main.model.TcsContact;
 import net.opensg.tcs.main.preference.PreferenceConstants;
 import net.opensg.tcs.multiedit.Activator;
+import net.opensg.tcs.multiedit.io.ContRepository;
 import net.opensg.tcs.multiedit.util.GeneralUtil;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -39,6 +40,12 @@ public class ContEditor extends EditorPart {
 
 	private Display display = null;
 	private TableViewer tableViewer = null;
+	public TableViewer getTableViewer() {
+		return tableViewer;
+	}
+	public void setTableViewer(TableViewer tableViewer) {
+		this.tableViewer = tableViewer;
+	}
 	private Table table = null;
 
 	private TableViewerColumn viewerColName = null;
@@ -48,9 +55,6 @@ public class ContEditor extends EditorPart {
 	private ContEditorCellEditingSupport columnEditingSupportEmail = null;
 	private ContEditorCellEditingSupport columnEditingSupportPhone = null;
 
-	public TableViewer getTableViewer() {
-		return tableViewer;
-	}
 
 	public static ContEditor getCurrentEditor() {
 		IEditorPart editor = Activator.getDefault().getWorkbench()
@@ -188,8 +192,9 @@ public class ContEditor extends EditorPart {
 
 	@Override
 	public boolean isDirty() {
-		return false;
+		return ContRepository.getInstance().isDirty();
 	}
+	
 
 	@Override
 	public boolean isSaveAsAllowed() {

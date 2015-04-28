@@ -1,17 +1,23 @@
 package net.opensg.tcs.multiedit.io;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.List;
-import java.util.Observable;
 
 import net.opensg.tcs.commons.libs.core.TreeItemInfo;
 
-public class ContRepository extends Observable {
+public class ContRepository extends ModelObject {
 
+	private boolean dirty = false;
+	public boolean isDirty() {
+		return dirty;
+	}
+	public void setDirty(boolean dirty) {
+		this.dirty = dirty;
+	}
+	
 	private static ContRepository singleInstance = null;
 	public static ContRepository getInstance() {
 		if (ContRepository.singleInstance == null) {
@@ -20,17 +26,18 @@ public class ContRepository extends Observable {
 		return ContRepository.singleInstance;
 	}
 	
-	public static final String dataChangeReason_ModelData = "ModelData";
-	public static final String dataChangeReason_FilePath = "FilePath";
+//	public static final String dataChangeReason_ModelData = "ModelData";
+//	public static final String dataChangeReason_FilePath = "FilePath";
 	
 	private List<TreeItemInfo> modelData = null;
 	public List<TreeItemInfo> getModelData() {
 		return this.modelData;
 	}
 	public void setModelData(List<TreeItemInfo> modelData) {
+		Object oldValue = this.modelData;
 		this.modelData = modelData;
-		this.setChanged();
-		this.notifyObservers(ContRepository.dataChangeReason_ModelData);
+		this.firePropertyChange("modelData", oldValue, this.modelData);
+		this.firePropertyChange("dirty", true, false);
 	}
 
 	private String modelFilePath = "";
@@ -38,11 +45,16 @@ public class ContRepository extends Observable {
 		return this.modelFilePath;
 	}
 	public void setModelFilePath(String modelFilePath) {
+		Object oldValue = this.modelFilePath;
 		this.modelFilePath = modelFilePath;
-		this.setChanged();
-		this.notifyObservers(ContRepository.dataChangeReason_FilePath);
+		this.firePropertyChange("modelFilePath", oldValue, this.modelFilePath);
+		this.firePropertyChange("dirty", true, false);
 	}
 
+	public void notifyUpdate() {
+		this.firePropertyChange("dirty", false, true);
+	}
+	
 	/**
 	 * 저장소로부터 데이터를 읽어온다 (Serialization)
 	 * @param dataPath
